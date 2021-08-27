@@ -1,0 +1,62 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+
+    <ui:composition>
+        <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
+
+            <!-- Sidebar - Brand -->
+            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.html">
+                <div class="sidebar-brand-icon rotate-n-0">
+                    <i><img src="#{request.contextPath}/access/img/Logo_blanco.png" height="50" width="85"></img></i>
+                </div>
+                <div class="sidebar-brand-text mx-3">EasyJob</div>
+            </a>
+
+            <!-- Divider -->
+            <hr class="sidebar-divider my-0"/>
+
+            <!-- Nav Item - Dashboard -->
+            <li class="nav-item active">
+                <a class="nav-link">
+                    <i class="fas fa-fw fa-tachometer-alt"></i>
+                    <span>Panel de Acceso</span></a>
+            </li>
+
+            <!-- Divider -->
+            <hr class="sidebar-divider"/>
+
+            <!-- Heading -->
+            <div class="sidebar-heading">
+                Roles Asignados
+            </div>
+            <hr class="sidebar-divider"/>
+
+            <c:forEach var="rol" items="#{usuarioSession.usuLogin.rolCollection}">
+                <li class="nav-item">
+                    <a class="nav-link collapsed" href="../#{rol.rol}/index.xhtml" >
+                        <i class="fas fa-fw #{rol.icono}"></i>
+                        <span>#{rol.rol}</span>
+                    </a>
+                </li>
+
+            </c:forEach>
+
+            <hr class="sidebar-divider"/>
+            <!-- Divider -->
+            <hr class="sidebar-divider d-none d-md-block"/>
+
+            <!-- Sidebar Toggler (Sidebar) -->
+            <div class="text-center d-none d-md-inline">
+                <button class="rounded-circle border-0" id="sidebarToggle"></button>
+            </div>
+
+
+        </ul>
+    </ui:composition>
+
+</html>
+

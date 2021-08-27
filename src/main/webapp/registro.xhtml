@@ -1,0 +1,142 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:html5="http://java.sun.com/jsf/passthrough"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <h:head>
+        <title>Registro EasyJob</title>
+        <meta charset="UTF-8"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1"/>
+        <!--===============================================================================================-->	
+        <link rel="icon" type="image/png" href="#{request.contextPath}/images/icons/favicon.ico"/>
+        <!--===============================================================================================-->
+        <link rel="stylesheet" type="text/css" href="#{request.contextPath}/vendor/bootstrap/css/bootstrap.min.css"/>
+        <!--===============================================================================================-->
+        <link rel="stylesheet" type="text/css" href="#{request.contextPath}/fonts/font-awesome-4.7.0/css/font-awesome.min.css"/>
+        <!--===============================================================================================-->
+        <link rel="stylesheet" type="text/css" href="#{request.contextPath}/vendor/animate/animate.css"/>
+        <!--===============================================================================================-->	
+        <link rel="stylesheet" type="text/css" href="#{request.contextPath}/vendor/css-hamburgers/hamburgers.min.css"/>
+        <!--===============================================================================================-->
+        <link rel="stylesheet" type="text/css" href="#{request.contextPath}/vendor/select2/select2.min.css"/>
+        <!--===============================================================================================-->
+        <link rel="stylesheet" type="text/css" href="#{request.contextPath}/css/util.css"/>
+        <link rel="stylesheet" type="text/css" href="#{request.contextPath}/css/main.css"/>
+        <!--===============================================================================================-->
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous"/>
+    </h:head>
+    <h:body>
+        <div class="row">
+            <div class="col" align="center">
+                <img src="images/SIN FONDO.png" alt="IMG" height="75%" width="10%"/>
+                <br/>
+                <h2>Formulario de Registro</h2>
+            </div>
+        </div>
+        <br/>
+        <div class="row">
+            <div class="col-md-1"></div>
+            <div class="col-md-10">
+                <h:form>
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label for="usuario">Usuario</label>
+                            <h:inputText value="#{usuarioSession.usuReg.nomUser}" class="form-control" />
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="clave">Contraseña</label>
+                            <h:inputSecret value="#{usuarioSession.usuReg.contrasena}" class="form-control"/>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label for="Nombre1">Primer Nombre</label>
+                            <h:inputText value="#{usuarioSession.datosIn.primerApellido}"  class="form-control"/>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="Nombre2">Segundo Nombre</label>
+                            <h:inputText value="#{usuarioSession.datosIn.segundoNombre}"  class="form-control"/>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label for="Apellido1">Primer Apellido</label>
+                            <h:inputText value="#{usuarioSession.datosIn.primerApellido}"  class="form-control"/>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="Apellido2">Segundo Apellido</label>
+                            <h:inputText value="#{usuarioSession.datosIn.segundoApellido}"  class="form-control"/>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label for="Cedula">Numero de identificacion</label>
+                            <h:inputText value="#{usuarioSession.usuReg.cedula}"  class="form-control"/>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="Telefono">Telefono de contacto (fijo o movil)</label>
+                            <h:inputText value="#{usuarioSession.contactoIn.telefono}"  class="form-control"/>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="Direccion">Direccion de Residencia</label>
+                        <h:inputText value="#{usuarioSession.direccionIn.direccion}" class="form-control" html5:placeholder="Diag 00 # 00 - 00"/>
+                    </div>
+                    <div class="form-group">
+                        <label for="CorreoE">Correo Electronico</label>
+                        <h:inputText value="#{usuarioSession.contactoIn.correoElectronico}" class="form-control" html5:placeholder="Correo Electronico"/>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group col-md-4">
+                            <label for="inputState">Departamento</label><br/>
+                            <h:selectOneMenu value="#{usuarioSession.deptIn}">
+                                <f:selectItems value="#{usuarioSession.allDepartamentos()}" var="objD"
+                                               itemLabel="#{objD.departamento}"
+                                               itemValue="#{objD.id}"
+                                               ></f:selectItems>
+                            </h:selectOneMenu>
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label for="inputState">Ciudad</label>
+                            <h:inputText value="#{usuarioSession.ciudadIn.ciudad}" class="form-control" html5:placeholder="Ciudad"/>
+                        </div>
+                        
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4"></div>
+                        <div class="col-md-4" align="center">
+                            <h:commandButton action="#{usuarioSession.newUser()}" class="btn btn-primary" value="Registrar"/>
+                        </div>
+                        <div class="col-md-4" align="right">
+                            <a href="index.xhtml" class="badge badge-secondary">Volver</a>
+                        </div>
+                    </div>  
+                </h:form>    
+            </div>
+            <div class="col-md-1"></div>
+        </div>
+        <!--===============================================================================================-->	
+        <script src="vendor/jquery/jquery-3.2.1.min.js"></script>
+        <!--===============================================================================================-->
+        <script src="vendor/bootstrap/js/popper.js"></script>
+        <script src="vendor/bootstrap/js/bootstrap.min.js"></script>
+        <!--===============================================================================================-->
+        <script src="vendor/select2/select2.min.js"></script>
+        <!--===============================================================================================-->
+        <script src="vendor/tilt/tilt.jquery.min.js"></script>
+        <script >
+            $('.js-tilt').tilt({
+                scale: 1.1
+            })
+        </script>
+        <!--===============================================================================================-->
+        <script src="js/main.js"></script>
+        <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-Piv4xVNRyMGpqkS2by6br4gNJ7DXjqk09RmUpJ8jgGtD7zP9yug3goQfGII0yAns" crossorigin="anonymous"></script>
+
+    </h:body>
+</html>
+

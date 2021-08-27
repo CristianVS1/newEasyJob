@@ -1,0 +1,155 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:html5="http://xmlns.jcp.org/jsf/passthrough"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:composition>
+        <div class="container-fluid">
+
+            <!-- Page Heading -->
+            <div class="d-sm-flex align-items-center justify-content-between mb-4">
+                <h1 class="h3 mb-0 text-gray-800">¡Bienvenido a EasyJob!</h1>
+
+            </div>
+
+
+            <div class="row">
+
+                <!-- Area Chart -->
+                <div class="col-xl-8 col-lg-7">
+                    <div class="card shadow mb-4">
+                        <!-- Card Header - Dropdown -->
+                        <div
+                            class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                            <h6 class="m-0 font-weight-bold text-primary">Datos Básicos</h6>
+
+                        </div>
+                        <!-- Card Body -->
+                        <div class="card-body container-fluid">
+                            <div class="chart-area">
+                                <h:form>
+                                    <div class="form-row">
+                                        <div class="form-group col-md-6">
+                                            <label for="usuario">Nombre de usuario</label>
+                                            <h:inputText value="#{usuarioSession.usuLogin.nomUser}" class="form-control" />
+                                        </div>
+                                        <div class="form-group col-md-6">
+                                            <label for="clave">Contraseña</label>
+                                            <h:inputSecret value="#{usuarioSession.usuLogin.contrasena}" class="form-control" html5:placeholder="Contraseña"/>
+                                        </div>
+                                    </div>
+                                    <div class="form-row">
+                                        <div class="form-group col-md-6">
+                                            <label for="Nombre1">Primer Nombre</label>
+                                            <h:inputText value="#{usuarioSession.datosIn.primerNombre}"  class="form-control" html5:placeholder="#{usuarioSession.usuLogin.datosId.primerNombre}" />
+                                        </div>
+                                        <div class="form-group col-md-6">
+                                            <label for="Nombre2">Segundo Nombre</label>
+                                            <h:inputText value="#{usuarioSession.datosIn.segundoNombre}"  class="form-control" html5:placeholder="#{usuarioSession.usuLogin.datosId.segundoNombre}"/>
+                                        </div>
+                                    </div>
+                                    <div class="form-row">
+                                        <div class="form-group col-md-6">
+                                            <label for="Apellido1">Primer Apellido</label>
+                                            <h:inputText value="#{usuarioSession.datosIn.primerApellido}"  class="form-control" html5:placeholder="#{usuarioSession.usuLogin.datosId.primerApellido}"/>
+                                        </div>
+                                        <div class="form-group col-md-6">
+                                            <label for="Apellido2">Segundo Apellido</label>
+                                            <h:inputText value="#{usuarioSession.datosIn.segundoApellido}"  class="form-control" html5:placeholder="#{usuarioSession.usuLogin.datosId.segundoApellido}"/>
+                                        </div>
+                                    </div>
+                                    <div class="form-row">
+                                        <div class="col-md-12" align="center">
+                                            <h:commandButton action="#{usuarioSession.actualizarDatosBasicos()}" class="btn btn-success btn-icon-split" value="Actualizar"/>
+                                        </div>
+                                    </div>
+                                </h:form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Pie Chart -->
+                <div class="col-xl-4 col-lg-5">
+                    <div class="card shadow mb-4">
+                        <!-- Card Header - Dropdown -->
+                        <div
+                            class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                            <h6 class="m-0 font-weight-bold text-primary">Imagen Perfil</h6>
+                            <div class="dropdown no-arrow">
+                                <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
+                                   data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
+                                </a>
+                                <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in"
+                                     aria-labelledby="dropdownMenuLink">
+                                    <div class="dropdown-header">Opciones:</div>
+                                    <a class="dropdown-item" onclick="$('#fotoPerfil\\:imgNew').click()">Actualizar</a>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Card Body -->
+                        <div class="card-body" align="center">
+                            <h:graphicImage class="img-profile rounded-circle" width="85%" height="85%" id="fotoPerfilUsuario" value="/imagesEJ/#{usuarioSession.usuLogin.foto}" ></h:graphicImage>
+                            <h:form enctype="multipart/form-data" id="fotoPerfil">
+                                <h:inputFile value="#{usuarioSession.fotoPerfil}" style="display: none" id="imgNew">
+                                    <f:ajax render="fotoPerfilUsuario fotoPerfilHeader" listener="#{usuarioSession.actualizarMifoto()}"></f:ajax>
+                                </h:inputFile>
+                                <input type="reset" style="display: none" id="formReset" value="Borrar"/>
+                                
+                            </h:form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+
+                <!-- Area Chart -->
+                <div class="col-xl-8 col-lg-7">
+                    <div class="card shadow mb-4">
+                        <!-- Card Header - Dropdown -->
+                        <div
+                            class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                            <h6 class="m-0 font-weight-bold text-primary">Datos de contacto</h6>
+
+                        </div>
+                        <!-- Card Body -->
+                        <div class="card-body">
+                            <div class="chart-area">
+                                <h:form>
+                                    <div class="form-row">
+
+                                        <div class="form-group col-md-12">
+                                            <label for="Direccion">Direccion de Residencia</label>
+                                            <h:inputText value="#{usuarioSession.direccionIn.direccion}" class="form-control" html5:placeholder="#{usuarioSession.usuLogin.contactoId.direccionId.direccion}"/>
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-md-12">
+                                        <label for="Telefono">Telefono de contacto (fijo o movil)</label>
+                                        <h:inputText value="#{usuarioSession.contactoIn.telefono}"  class="form-control" html5:placeholder="#{usuarioSession.usuLogin.contactoId.telefono}"/>
+                                    </div>
+                                    <div class="form-group col-md-12">
+                                        <label for="CorreoE">Correo Electronico</label>
+                                        <h:inputText value="#{usuarioSession.contactoIn.correoElectronico}" class="form-control" html5:placeholder="#{usuarioSession.usuLogin.contactoId.correoElectronico}"/>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-4"></div>
+                                        <div class="col-md-4" align="center">
+                                            <h:commandButton action="#{usuarioSession.actualizarDatosContacto()}" class="btn btn-success btn-icon-split" value="Actualizar"/>
+                                        </div>
+                                        <div class="col-md-4" align="right">
+                                        </div>
+                                    </div>  
+                                </h:form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </ui:composition>
+</html>
+

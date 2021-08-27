@@ -1,0 +1,84 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:html5="http://xmlns.jcp.org/jsf/passthrough"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+
+    <ui:composition>
+        <div class="container-fluid">
+
+            <!-- Page Heading -->
+            <div class="d-sm-flex align-items-center justify-content-between mb-4">
+                <h1 class="h3 mb-0 text-gray-800">Gestión Pedidos</h1>
+
+            </div>
+
+            <div class="card shadow mb-4">
+                <div class="card-header py-3">
+                    <h6 class="m-0 font-weight-bold text-primary">Pedidos</h6>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                            <thead>
+                                <tr>
+                                    <th>No. Pedido</th>
+                                    <th>Fecha pedido</th>
+                                    <th>Estado pedido</th>
+                                    <th>Osbervaciones</th>
+                                    <th>Realizado por</th>
+                                    <th>Administrador asignado</th>
+                                    <th>Proveedor</th>
+                                    <th>Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <h:form>
+                                    <c:forEach var="ped" items="#{pedidosYProveedorSession.todosPedidos()}">
+                                        <tr>
+                                            <td>
+                                                #{ped.id}
+                                            </td>
+                                            <td>
+                                                #{ped.fechaPedido}
+                                            </td>
+                                            <td>#{ped.aprobacion.estadosolicitud.descripcion}</td>
+                                            <td>#{ped.aprobacion.estadosolicitud.observaciones}</td>
+                                            <td>#{ped.empleado.usuario.datosId.primerNombre} #{ped.empleado.usuario.datosId.primerApellido}</td>
+                                            <td>
+                                                #{ped.aprobacion.administrador.usuario.datosId.primerNombre} #{ped.aprobacion.administrador.usuario.datosId.primerApellido}
+                                            </td>
+                                            <td>
+                                                #{ped.proveedor.nombreProveedor}
+                                            </td>
+                                            <td>
+                                                <h:commandButton class="btn btn-success btn-icon-split btn-sm" value="Evaluar Pedido"></h:commandButton>
+                                                <h:commandButton class="btn btn-primary btn-icon-split btn-sm" value="Detalle Pedido"></h:commandButton>
+                                            </td>
+                                        </tr>
+                                    </c:forEach>
+                                </h:form>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-4" align="center">
+                    <h:form>
+                        <h:commandButton class="btn btn-success btn-icon-split" value="Registrar Pedido"></h:commandButton>
+                    </h:form>
+                </div>
+                <div class="col-md-4" align="center">
+                </div>
+                <div class="col-md-4"></div>
+
+            </div>
+            
+        </div>
+    </ui:composition>
+</html>
+

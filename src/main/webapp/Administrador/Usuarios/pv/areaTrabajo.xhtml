@@ -1,0 +1,301 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:html5="http://xmlns.jcp.org/jsf/passthrough"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+
+    <ui:composition>
+        <div class="container-fluid">
+
+            <!-- Page Heading -->
+            <div class="d-sm-flex align-items-center justify-content-between mb-4">
+                <h1 class="h3 mb-0 text-gray-800">Gestión Usuarios</h1>
+
+            </div>
+            <div class="card shadow mb-4">
+                <div class="card-header py-3">
+                    <h6 class="m-0 font-weight-bold text-primary">Usuarios</h6>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                            <thead>
+                                <tr>
+                                    <th>Foto</th>
+                                    <th>Nombres y Apellidos</th>
+                                    <th>Documento</th>
+                                    <th>Estado</th>
+                                    <th>Perfiles</th>
+                                    <th>Cargo(s)</th>
+                                    <th>Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <h:form >
+                                    <c:forEach var="usu" items="#{usuarioSession.todosUsuarios()}">
+                                        <tr>
+                                            <td>
+                                                <c:if test="#{usu.foto != null}">
+                                                    <h:graphicImage class="img-profile rounded-circle"  value="/imagesEJ/#{usu.foto}" height="30px" width="40px" ></h:graphicImage>
+                                                </c:if>
+                                                <c:if test="#{usu.foto == null}">
+                                                    <h:graphicImage class="img-profile rounded-circle"  value="/imagesEJ/default.png" height="30px" width="40px" ></h:graphicImage>
+                                                </c:if>
+                                            </td>
+                                            <td>
+                                                #{usu.datosId.primerNombre} #{usu.datosId.segundoNombre} 
+                                                #{usu.datosId.primerApellido} #{usu.datosId.segundoApellido}
+                                            </td>
+                                            <td>#{usu.cedula}</td>
+                                            <td>#{usu.estado eq '1'? 'Activo' :'Inactivo'}</td>
+                                            <td>
+                                                <h:commandButton action="#{usuarioSession.cargaTemporal(usu)}" type="submit" class="btn btn-primary" html5:data-bs-toggle="modal" html5:data-bs-target="#ModalPerfiles" value="Perfil">
+                                                    <f:ajax render=":modalPerfil"></f:ajax>
+                                                </h:commandButton>
+                                            </td>
+                                            <td>
+                                                    <c:forEach var="rol" items="#{usu.rolCollection}">
+                                                        <c:if test="#{rol.id == 2}">
+                                                            <h:commandButton action="#{usuarioSession.cargaTemporalEmpleado(usu)}" type="submit" class="btn btn-primary" html5:data-bs-toggle="modal" html5:data-bs-target="#exampleModal" value="Cargo">
+                                                                <f:ajax render=":modalCargo"></f:ajax> 
+                                                            </h:commandButton>
+                                                        </c:if>
+                                                    </c:forEach>
+                                            </td>
+                                            <td>
+                                                <h:commandButton action="#" class="btn btn-warning btn-icon-split btn-sm" value="Actualizar"></h:commandButton>
+                                                <h:commandButton action="#{usuarioSession.cambiarEstado(usu)}" class="btn btn-info btn-icon-split btn-sm" value="Activar/Inactivar"></h:commandButton>
+                                            </td>
+                                        </tr>
+                                    </c:forEach>
+                                </h:form>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-4"></div>
+                <div class="col-md-4" align="center">
+                    <h:form>
+                        <h:commandButton type="button" class="btn btn-success btn-icon-split" html5:data-bs-toggle="modal" html5:data-bs-target="#ModalRegistro" value="Registrar Usuario"></h:commandButton>
+                    </h:form>
+                </div>
+                <div class="col-md-4"></div>
+
+            </div>
+        </div>
+
+        <!-- Modal Perfiles -->
+        <div class="modal fade" id="ModalPerfiles" tabindex="-1" aria-labelledby="ModalPerfilesLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <h:form id="modalPerfil">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Perfiles / #{usuarioSession.usuTemporal.datosId.primerNombre} #{usuarioSession.usuTemporal.datosId.primerApellido}</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="table-responsive">
+                                        <table class="table table-bordered">
+                                            <thead>
+                                                <th>Activo</th>
+                                            </thead>
+                                            <c:forEach var="rol" items="#{usuarioSession.usuTemporal.rolCollection}">
+                                                <tbody style="background: #80bdff">
+                                                    <td>
+                                                        <h:commandLink action="#{usuarioSession.removerRol(rol.id)}">
+                                                            <span class="fas fa-fw #{rol.icono}"></span> <span>#{rol.rol}</span>
+                                                            <f:ajax render=":modalPerfil"></f:ajax>    
+                                                        </h:commandLink>
+                                                    </td>
+                                                </tbody>
+                                            </c:forEach>
+
+                                        </table>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="table-responsive">
+                                        <table class="table table-bordered">
+                                            <thead>
+                                                <th>Inactivo</th>
+                                            </thead>
+                                            <c:forEach var="rolSn" items="#{usuarioSession.rolesSinAsignar}">
+                                                <tbody style="background: gainsboro">
+                                                    <td>
+                                                        <h:commandLink action="#{usuarioSession.addRol(rolSn.id)}">
+                                                            <span class="fas fa-fw #{rolSn.icono}"></span> <span>#{rolSn.rol}</span>
+                                                            <f:ajax  render=":modalPerfil"></f:ajax>   
+                                                        </h:commandLink>
+                                                    </td>
+                                                </tbody>
+                                            </c:forEach>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <a href="index.xhtml" class="btn btn-secondary" >Close</a>
+                        </div>
+                    </h:form>
+                </div>
+            </div>
+        </div>
+
+
+        <!-- Modal Registro -->
+
+        <div class="modal fade" id="ModalRegistro" tabindex="-1" aria-labelledby="ModalRegistroLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-scrollable">
+                <div class="modal-content">
+                    <h:form>
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Registro Usuario</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="form-row">
+                                <div class="form-group col-md-6">
+                                    <label for="usuario">Usuario</label>
+                                    <h:inputText value="#{usuarioSession.usuReg.nomUser}" class="form-control" />
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <label for="clave">Contraseña</label>
+                                    <h:inputSecret value="#{usuarioSession.usuReg.contrasena}" class="form-control"/>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group col-md-6">
+                                    <label for="Nombre1">Primer Nombre</label>
+                                    <h:inputText value="#{usuarioSession.datosIn.primerNombre}"  class="form-control"/>
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <label for="Nombre2">Segundo Nombre</label>
+                                    <h:inputText value="#{usuarioSession.datosIn.segundoNombre}"  class="form-control"/>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group col-md-6">
+                                    <label for="Apellido1">Primer Apellido</label>
+                                    <h:inputText value="#{usuarioSession.datosIn.primerApellido}"  class="form-control"/>
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <label for="Apellido2">Segundo Apellido</label>
+                                    <h:inputText value="#{usuarioSession.datosIn.segundoApellido}"  class="form-control"/>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group col-md-6">
+                                    <label for="Cedula">Numero de identificacion</label>
+                                    <h:inputText value="#{usuarioSession.usuReg.cedula}"  class="form-control"/>
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <label for="Telefono">Telefono (fijo o movil)</label>
+                                    <h:inputText value="#{usuarioSession.contactoIn.telefono}"  class="form-control"/>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="Direccion">Direccion de Residencia</label>
+                                <h:inputText value="#{usuarioSession.direccionIn.direccion}" class="form-control" html5:placeholder="Diag 00 # 00 - 00"/>
+                            </div>
+                            <div class="form-group">
+                                <label for="CorreoE">Correo Electronico</label>
+                                <h:inputText value="#{usuarioSession.contactoIn.correoElectronico}" class="form-control" html5:placeholder="Correo Electronico"/>
+                            </div>
+
+                            <div class="form-row">
+                                <div class="form-group col-md-4">
+                                    <label for="inputState">Departamento</label><br/>
+                                    <h:selectOneMenu value="#{usuarioSession.deptIn}" class="form-select" html5:aria-label="Default select example">
+                                        <f:selectItems value="#{usuarioSession.allDepartamentos()}" var="objD"
+                                                       itemLabel="#{objD.departamento}"
+                                                       itemValue="#{objD.id}"
+                                                       ></f:selectItems>
+                                    </h:selectOneMenu>
+                                </div>
+                                <div class="form-group col-md-4">
+                                    <label for="inputState">Ciudad</label>
+                                    <h:inputText value="#{usuarioSession.ciudadIn.ciudad}" class="form-control" html5:placeholder="Ciudad"/>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            <h:commandButton action="#{usuarioSession.newUser()}" class="btn btn-primary" value="Registrar"/>
+                        </div>
+                    </h:form>
+                </div>
+            </div>
+        </div>
+
+
+        <!-- Modal Cargo -->
+        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <h:form id="modalCargo">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Cargo / #{usuarioSession.usuTemporal.datosId.primerNombre} #{usuarioSession.usuTemporal.datosId.primerApellido}</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="table-responsive">
+                                        <table class="table table-bordered">
+                                            <thead>
+                                                <th>Activo</th>
+                                            </thead>
+                                            <c:forEach var="cargo" items="#{usuarioSession.usuTemporal.empleadoCollection}">
+                                                <tbody style="background: #80bdff">
+                                                    <td>
+                                                        <h:commandLink action="#{usuarioSession.removerCargo(cargo.cargo.id)}">
+                                                            <span>#{cargo.cargo.cargo}</span>
+                                                            <f:ajax render=":modalCargo "></f:ajax>    
+                                                        </h:commandLink>
+                                                    </td>
+                                                </tbody>
+                                            </c:forEach>
+
+                                        </table>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="table-responsive">
+                                        <table class="table table-bordered">
+                                            <thead>
+                                                <th>Inactivo</th>
+                                            </thead>
+                                            <c:forEach var="cargoSn" items="#{usuarioSession.cargosSinAsignar}">
+                                                <tbody style="background: gainsboro">
+                                                    <td>
+                                                        <h:commandLink action="#{usuarioSession.addCargo(cargoSn.id)}">
+                                                            <span>#{cargoSn.cargo}</span>
+                                                            <f:ajax  render=":modalCargo "></f:ajax>   
+                                                        </h:commandLink>
+                                                    </td>
+                                                </tbody>
+                                            </c:forEach>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        </div>
+                    </h:form>
+                </div>
+            </div>
+        </div>
+    </ui:composition>
+</html>
+
