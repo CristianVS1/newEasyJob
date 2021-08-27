@@ -180,6 +180,10 @@ public class UsuarioSession implements Serializable {
             usuarioFacadeLocal.create(usuReg);
             if (usuReg != null) {
                 usuReg = new Usuario();
+                ciudadIn = new Ciudad();
+                contactoIn = new Contacto();
+                direccionIn = new Direccion();
+                datosIn = new DatosPersonales();
                 PrimeFaces.current().executeScript("Swal.fire({\n"
                         + "  title: 'Registrado!',\n"
                         + "  text: 'usuario registrado con exito',\n"
@@ -197,6 +201,7 @@ public class UsuarioSession implements Serializable {
                     + "})");
             return false;
         }
+        
     }
 
     public void recuperarClave() {
@@ -240,6 +245,41 @@ public class UsuarioSession implements Serializable {
     public List<Usuario> todosUsuarios() {
         return usuarioFacadeLocal.ListaUsuarios();
     }
+    
+    public void actualizarDatosTemporal(){
+        try {
+            Ciudad ciudadT = usuTemporal.getContactoId().getDireccionId().getCiudadId();
+            ciudadT.setCiudad(ciudadIn.getCiudad());
+            ciudadFacadeLocal.edit(ciudadT);
+            Direccion direccionT = usuTemporal.getContactoId().getDireccionId();
+            direccionT.setDireccion(direccionIn.getDireccion());
+            direccionFacadeLocal.edit(direccionT);
+            Contacto contacT = usuTemporal.getContactoId();
+            contacT.setCorreoElectronico(contactoIn.getCorreoElectronico());
+            contacT.setTelefono(contactoIn.getTelefono());
+            contactoFacadeLocal.edit(contacT);
+            DatosPersonales DatosT = usuTemporal.getDatosId();
+            DatosT.setPrimerNombre(datosIn.getPrimerNombre());
+            DatosT.setSegundoNombre(datosIn.getSegundoNombre());
+            DatosT.setPrimerApellido(datosIn.getPrimerApellido());
+            DatosT.setSegundoApellido(datosIn.getSegundoApellido());
+            datosPersonalesFacadeLocal.edit(DatosT);
+            usuarioFacadeLocal.edit(usuTemporal);
+            PrimeFaces.current().executeScript("Swal.fire({\n"
+                    + "  title: 'Usuario Actualizado!',\n"
+                    + "  text: 'La información ah sido actualizada con exito',\n"
+                    + "  icon: 'success',\n"
+                    + "  confirmButtonText: 'Aceptar'\n"
+                    + "})");
+        } catch (Exception e) {
+            PrimeFaces.current().executeScript("Swal.fire({\n"
+                    + "  title: 'Error!',\n"
+                    + "  text: 'Lo sentimos, en el momento no se puede realizar la operacion',\n"
+                    + "  icon: 'error',\n"
+                    + "  confirmButtonText: 'Intente mas tarde'\n"
+                    + "})");
+        }
+    }
 
     public void actualizarDatosBasicos() {
         
@@ -250,6 +290,7 @@ public class UsuarioSession implements Serializable {
             DatosA.setPrimerApellido(datosIn.getPrimerApellido());
             DatosA.setSegundoApellido(datosIn.getSegundoApellido());
             datosPersonalesFacadeLocal.edit(DatosA);
+            usuarioFacadeLocal.edit(usuLogin);
             PrimeFaces.current().executeScript("Swal.fire({\n"
                     + "  title: 'Usuario Actualizado!',\n"
                     + "  text: 'La información ah sido actualizada con exito',\n"
@@ -268,9 +309,13 @@ public class UsuarioSession implements Serializable {
     }
     public void actualizarDatosContacto() {
         try {
-            contactoIn.setDireccionId(direccionIn);
-            usuLogin.setContactoId(contactoIn);
-            usuarioFacadeLocal.edit(usuLogin);
+            Contacto contacA = usuLogin.getContactoId();
+            Direccion direccionA = usuLogin.getContactoId().getDireccionId();
+            direccionA.setDireccion(direccionIn.getDireccion());
+            contacA.setCorreoElectronico(contactoIn.getCorreoElectronico());
+            contacA.setTelefono(contactoIn.getTelefono());
+            direccionFacadeLocal.edit(direccionA);
+            contactoFacadeLocal.edit(contacA);
             PrimeFaces.current().executeScript("Swal.fire({\n"
                     + "  title: 'Usuario Actualizado!',\n"
                     + "  text: 'La información ah sido actualizada con exito',\n"

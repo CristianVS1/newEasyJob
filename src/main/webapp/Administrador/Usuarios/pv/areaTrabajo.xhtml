@@ -57,17 +57,19 @@
                                                 </h:commandButton>
                                             </td>
                                             <td>
-                                                    <c:forEach var="rol" items="#{usu.rolCollection}">
-                                                        <c:if test="#{rol.id == 2}">
-                                                            <h:commandButton action="#{usuarioSession.cargaTemporalEmpleado(usu)}" type="submit" class="btn btn-primary" html5:data-bs-toggle="modal" html5:data-bs-target="#exampleModal" value="Cargo">
-                                                                <f:ajax render=":modalCargo"></f:ajax> 
-                                                            </h:commandButton>
-                                                        </c:if>
-                                                    </c:forEach>
+                                                <c:forEach var="rol" items="#{usu.rolCollection}">
+                                                    <c:if test="#{rol.id == 2}">
+                                                        <h:commandButton action="#{usuarioSession.cargaTemporalEmpleado(usu)}" type="submit" class="btn btn-primary" html5:data-bs-toggle="modal" html5:data-bs-target="#CargoModal" value="Cargo">
+                                                            <f:ajax render=":modalCargo"></f:ajax> 
+                                                        </h:commandButton>
+                                                    </c:if>
+                                                </c:forEach>
                                             </td>
                                             <td>
-                                                <h:commandButton action="#" class="btn btn-warning btn-icon-split btn-sm" value="Actualizar"></h:commandButton>
-                                                <h:commandButton action="#{usuarioSession.cambiarEstado(usu)}" class="btn btn-info btn-icon-split btn-sm" value="Activar/Inactivar"></h:commandButton>
+                                                <h:commandButton action="#{usuarioSession.cargaTemporal(usu)}" class="btn btn-warning btn-icon-split btn-sm" type="button" html5:data-bs-toggle="modal" html5:data-bs-target="#ActualizarModal" value="Actualizar">
+                                                    <f:ajax render=":ActualizarModal"></f:ajax>
+                                                </h:commandButton>
+                                                <h:commandButton action="#{usuarioSession.cambiarEstado(usu)}" class="btn btn-info btn-icon-split btn-sm" value="Cambiar Estado"></h:commandButton>
                                             </td>
                                         </tr>
                                     </c:forEach>
@@ -142,7 +144,7 @@
                             </div>
                         </div>
                         <div class="modal-footer">
-                            <a href="index.xhtml" class="btn btn-secondary" >Close</a>
+                            <a href="index.xhtml" class="btn btn-secondary" >Cerrar</a>
                         </div>
                     </h:form>
                 </div>
@@ -151,9 +153,9 @@
 
 
         <!-- Modal Registro -->
-
+        
         <div class="modal fade" id="ModalRegistro" tabindex="-1" aria-labelledby="ModalRegistroLabel" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-scrollable">
+            <div class="modal-dialog modal-dialog">
                 <div class="modal-content">
                     <h:form>
                         <div class="modal-header">
@@ -228,7 +230,7 @@
 
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
                             <h:commandButton action="#{usuarioSession.newUser()}" class="btn btn-primary" value="Registrar"/>
                         </div>
                     </h:form>
@@ -238,7 +240,7 @@
 
 
         <!-- Modal Cargo -->
-        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal fade" id="CargoModal" tabindex="-1" aria-labelledby="CargoModalLabel" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <h:form id="modalCargo">
@@ -291,6 +293,82 @@
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        </div>
+                    </h:form>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal Actualizar -->
+        <div class="modal fade" id="ActualizarModal" tabindex="-1" aria-labelledby="ActualizarModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <h:form>
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Actualizar / #{usuarioSession.usuTemporal.datosId.primerNombre} #{usuarioSession.usuTemporal.datosId.primerApellido} </h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="form-row">
+                                <div class="form-group col-md-6">
+                                    <label for="usuario">Usuario</label>
+                                    <h:inputText value="#{usuarioSession.usuTemporal.nomUser}" class="form-control" />
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <label for="clave">Contraseña</label>
+                                    <h:inputSecret value="#{usuarioSession.usuTemporal.contrasena}" class="form-control"/>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group col-md-6">
+                                    <label for="Nombre1">Primer Nombre</label>
+                                    <h:inputText value="#{usuarioSession.datosIn.primerNombre}"  class="form-control" />
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <label for="Nombre2">Segundo Nombre</label>
+                                    <h:inputText value="#{usuarioSession.datosIn.segundoNombre}"  class="form-control"/>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group col-md-6">
+                                    <label for="Apellido1">Primer Apellido</label>
+                                    <h:inputText value="#{usuarioSession.datosIn.primerApellido}"  class="form-control"/>
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <label for="Apellido2">Segundo Apellido</label>
+                                    <h:inputText value="#{usuarioSession.datosIn.segundoApellido}"  class="form-control"/>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group col-md-6">
+                                    <label for="Cedula">Numero de identificacion</label>
+                                    <h:inputText disabled="true" value="#{usuarioSession.usuTemporal.cedula}"  class="form-control"/>
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <label for="Telefono">Telefono (fijo o movil)</label>
+                                    <h:inputText value="#{usuarioSession.contactoIn.telefono}"  class="form-control"/>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="Direccion">Direccion de Residencia</label>
+                                <h:inputText value="#{usuarioSession.direccionIn.direccion}" class="form-control" html5:placeholder="Diag 00 # 00 - 00"/>
+                            </div>
+                            <div class="form-group">
+                                <label for="CorreoE">Correo Electronico</label>
+                                <h:inputText value="#{usuarioSession.contactoIn.correoElectronico}" class="form-control" html5:placeholder="Correo Electronico"/>
+                            </div>
+
+                            <div class="form-row">
+                                <div class="form-group col-md-6">
+                                    <label for="inputState">Ciudad</label>
+                                    <h:inputText value="#{usuarioSession.ciudadIn.ciudad}" class="form-control" html5:placeholder="Ciudad"/>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                            <h:commandButton action="#{usuarioSession.actualizarDatosTemporal()}" class="btn btn-primary" value="Actualizar"/>
                         </div>
                     </h:form>
                 </div>
