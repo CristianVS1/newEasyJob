@@ -66,8 +66,13 @@
                                                 </c:forEach>
                                             </td>
                                             <td>
-                                                <h:commandButton action="#{usuarioSession.cargaTemporal(usu)}" class="btn btn-warning btn-icon-split btn-sm" type="button" html5:data-bs-toggle="modal" html5:data-bs-target="#ActualizarModal" value="Actualizar">
+                                                <h:commandButton action="#{usuarioSession.cargaTemporal(usu)}" class="btn btn-warning btn-icon-split btn-sm" type="button" html5:data-bs-toggle="modal" html5:data-bs-target="#ActualizarModal" value="Actualizar" html5:data-whatever="@mdo" >
                                                     <f:ajax render=":ActualizarModal"></f:ajax>
+                                                </h:commandButton>
+                                                <h:commandButton action="#{usuarioSession.cargaTemporal(usu)}" class="btn btn-primary" value="Editar" html5:data-toggle="modal" html5:data-target=".staticBackdrop" html5:data-whatever="@mdo">
+                                                    <f:ajax render=":modalForm">
+
+                                                    </f:ajax>
                                                 </h:commandButton>
                                                 <h:commandButton action="#{usuarioSession.cambiarEstado(usu)}" class="btn btn-info btn-icon-split btn-sm" value="Cambiar Estado"></h:commandButton>
                                             </td>
@@ -153,7 +158,7 @@
 
 
         <!-- Modal Registro -->
-        
+
         <div class="modal fade" id="ModalRegistro" tabindex="-1" aria-labelledby="ModalRegistroLabel" aria-hidden="true">
             <div class="modal-dialog modal-dialog">
                 <div class="modal-content">
@@ -312,11 +317,11 @@
                             <div class="form-row">
                                 <div class="form-group col-md-6">
                                     <label for="usuario">Usuario</label>
-                                    <h:inputText value="#{usuarioSession.usuTemporal.nomUser}" class="form-control" />
+                                    <h:inputText value="#{usuarioSession.usuTemporal.nomUser}" class="form-control" id="usuario" />
                                 </div>
                                 <div class="form-group col-md-6">
                                     <label for="clave">Contraseña</label>
-                                    <h:inputSecret value="#{usuarioSession.usuTemporal.contrasena}" class="form-control"/>
+                                    <h:inputSecret value="#{usuarioSession.usuTemporal.contrasena}" class="form-control" id="clave" />
                                 </div>
                             </div>
                             <div class="form-row">
@@ -374,6 +379,8 @@
                 </div>
             </div>
         </div>
+        
+        
     </ui:composition>
 </html>
 

@@ -40,6 +40,8 @@ public class InventarioSession implements Serializable {
 
     private Part fotoProducto;
     private Producto productoIn = new Producto();
+    private Producto productoT = new Producto();
+    private Referencia refTemporal = new Referencia();
     private Referencia refNew = new Referencia();
     private Producto prodTest = new Producto();
 
@@ -125,6 +127,34 @@ public class InventarioSession implements Serializable {
         return referenciaFacadeLocal.todasReferencias();
     }
 
+    public void referenciaTemporal(Referencia ref) {
+        this.refTemporal = ref;
+    }
+
+    public void actualizarCantidadref() {
+        try {
+            Producto ptemp = refTemporal.getProducto();
+            ptemp.setNombreProducto(productoIn.getNombreProducto());
+            ptemp.setDescripcion(productoIn.getDescripcion());
+            productoFacadeLocal.edit(productoT);
+            refTemporal.setCantidaDisponible(refTemporal.getCantidaDisponible()+refNew.getCantidaDisponible());
+            referenciaFacadeLocal.edit(refTemporal);
+            PrimeFaces.current().executeScript("Swal.fire({\n"
+                    + "  title: 'Producto Actualizado!',\n"
+                    + "  text: 'La información ah sido actualizada con exito',\n"
+                    + "  icon: 'success',\n"
+                    + "  confirmButtonText: 'Aceptar'\n"
+                    + "})");
+        } catch (Exception e) {
+            PrimeFaces.current().executeScript("Swal.fire({\n"
+                    + "  title: 'Error!',\n"
+                    + "  text: 'Lo sentimos, en el momento no se puede realizar la operacion',\n"
+                    + "  icon: 'error',\n"
+                    + "  confirmButtonText: 'Intente mas tarde'\n"
+                    + "})");
+        }
+    }
+
     public boolean newProducto() {
         try {
             refNew.setProducto(productoIn);
@@ -150,11 +180,11 @@ public class InventarioSession implements Serializable {
         }
 
     }
-
+     
     public Part getFotoProducto() {
         return fotoProducto;
     }
-
+    
     public void setFotoProducto(Part fotoProducto) {
         this.fotoProducto = fotoProducto;
     }
@@ -181,6 +211,22 @@ public class InventarioSession implements Serializable {
 
     public void setProdTest(Producto prodTest) {
         this.prodTest = prodTest;
+    }
+
+    public Producto getProductoT() {
+        return productoT;
+    }
+
+    public void setProductoT(Producto productoT) {
+        this.productoT = productoT;
+    }
+
+    public Referencia getRefTemporal() {
+        return refTemporal;
+    }
+
+    public void setRefTemporal(Referencia refTemporal) {
+        this.refTemporal = refTemporal;
     }
 
 }
