@@ -39,7 +39,10 @@
                                                 #{ven.id}
                                             </td>
                                             <td >
-                                                #{ven.fechaVenta}
+                                                <h:outputText value="#{ven.fechaVenta}">
+                                                    <f:convertDateTime pattern="yyyy-MM-dd"></f:convertDateTime>
+                                                </h:outputText>
+                                                
                                             </td>
                                             <td>#{ven.empleado.usuario.datosId.primerNombre} #{ven.empleado.usuario.datosId.primerApellido}</td>
                                             <td>
