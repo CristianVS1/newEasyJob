@@ -133,10 +133,6 @@ public class InventarioSession implements Serializable {
 
     public void actualizarCantidadref() {
         try {
-            Producto ptemp = refTemporal.getProducto();
-            ptemp.setNombreProducto(productoIn.getNombreProducto());
-            ptemp.setDescripcion(productoIn.getDescripcion());
-            productoFacadeLocal.edit(productoT);
             refTemporal.setCantidaDisponible(refTemporal.getCantidaDisponible()+refNew.getCantidaDisponible());
             referenciaFacadeLocal.edit(refTemporal);
             PrimeFaces.current().executeScript("Swal.fire({\n"
@@ -157,6 +153,7 @@ public class InventarioSession implements Serializable {
 
     public boolean newProducto() {
         try {
+            productoFacadeLocal.create(productoIn);
             refNew.setProducto(productoIn);
             referenciaFacadeLocal.create(refNew);
             if (refNew != null) {
