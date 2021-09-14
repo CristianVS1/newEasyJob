@@ -39,7 +39,18 @@
                                     <c:forEach var="pro" items="#{inventarioSession.todosProductos()}">
                                         <tr>
                                             <td>
-                                                Foto<!--<h:graphicImage  value="/imagesEJ/#{pro.producto.fotoProducto}" height="30px" width="30px" ></h:graphicImage>-->
+                                                <c:if test="#{usu.foto != null}">
+                                                    <h:graphicImage id="fotoProd" class="img-profile rounded-circle"  value="/imagesPrd/#{pro.producto.fotoProducto}" height="30px" width="40px" ></h:graphicImage>
+                                                    <h:form enctype="multipart/form-data" id="fotoProducto" >
+                                                        <h:inputFile value="#{inventarioSession.fotoProducto}" style="display: none" id="imgP" >
+                                                            <f:ajax render="fotoProd" listener="#{inventarioSession.addfoto()}"></f:ajax>
+                                                        </h:inputFile>
+                                                        <input type="reset" style="display: none" id="PrdReset" value="Borrar"/>
+                                                    </h:form>
+                                                </c:if>
+                                                <c:if test="#{usu.foto == null}">
+                                                    <h:graphicImage class="img-profile rounded-circle"  value="/imagesPrd/default.png" height="30px" width="40px" ></h:graphicImage>
+                                                </c:if>
                                             </td>
                                             <td>
                                                 #{pro.producto.nombreProducto}
@@ -53,7 +64,8 @@
                                                 <button class="btn btn-info">Categoria</button>
                                             </td>
                                             <td>
-                                                <h:commandButton class="btn btn-info btn-icon-split btn-sm" value="Actualizar Imagen"></h:commandButton>
+                                                <h:commandButton class="btn btn-info btn-icon-split btn-sm" onclick="$('#fotoProducto\\:imgP').click()" action="#{inventarioSession.referenciaTemporal(pro)}" value="Actualizar Img" ></h:commandButton>
+
                                                 <h:commandButton action="#{inventarioSession.referenciaTemporal(pro)}" class="btn btn-warning btn-icon-split btn-sm" value="Actualizar Cantidad" html5:data-bs-toggle="modal" html5:data-bs-target="#ActualizarModal" >
                                                     <f:ajax render="actProducto"></f:ajax>
                                                 </h:commandButton>

@@ -178,6 +178,79 @@ public class InventarioSession implements Serializable {
 
     }
      
+    public void addfoto() {
+        try {
+            if (fotoProducto != null) {
+                if (fotoProducto.getSize() > 900000) {
+                    PrimeFaces.current().executeScript("Swal.fire({"
+                            + "  title: 'Error!',"
+                            + "  text: 'No se puede cargar este archivo, pór su tamaño',"
+                            + "  icon: 'error',"
+                            + "  confirmButtonText: 'Por favor intente mas tarde'"
+                            + "})");
+                } else if (fotoProducto.getContentType().equalsIgnoreCase("image/jpeg") || fotoProducto.getContentType().equalsIgnoreCase("image/png")) {
+
+                    File carpeta = new File("C:/Users/user/Documents/NetBeansProjects/ImgnewEasyJob/Fotos/Productos");
+                    if (!carpeta.exists()) {
+                        carpeta.mkdirs();
+                    }
+                    try (InputStream is = fotoProducto.getInputStream()) {
+                        Calendar hoy = Calendar.getInstance();
+                        String renombrar = sdf.format(hoy.getTime()) + ".";
+                        renombrar += FilenameUtils.getExtension(fotoProducto.getSubmittedFileName());
+                        Files.copy(is, (new File(carpeta, renombrar)).toPath(), StandardCopyOption.REPLACE_EXISTING);
+                        Producto pFoto = refTemporal.getProducto();
+                        pFoto.setFotoProducto(renombrar);
+                        productoFacadeLocal.edit(pFoto);
+                        PrimeFaces.current().executeScript("Swal.fire({"
+                                + "  title: 'Foto cargada !',"
+                                + "  text: 'Con Exito !!!',"
+                                + "  icon: 'success',"
+                                + "  confirmButtonText: 'Ok'"
+                                + "})");
+                        PrimeFaces.current().executeScript("document.getElementById('formReset').click()");
+
+                    } catch (Exception e) {
+                        PrimeFaces.current().executeScript("Swal.fire({"
+                                + "  title: 'Error!',"
+                                + "  text: 'No se puede realizar esta peticion',"
+                                + "  icon: 'error',"
+                                + "  confirmButtonText: 'Por favor intente mas tarde'"
+                                + "})");
+
+                    }
+
+                } else {
+                    PrimeFaces.current().executeScript("Swal.fire({"
+                            + "  title: 'Error!',"
+                            + "  text: 'Tipo de archivo no permitido, recuerde la extencion es "
+                            + ".jpeg o .png',"
+                            + "  icon: 'error',"
+                            + "  confirmButtonText: 'Por favor intente mas tarde'"
+                            + "})");
+                }
+
+            } else {
+                PrimeFaces.current().executeScript("Swal.fire({"
+                        + "  title: 'Error!',"
+                        + "  text: 'No se puede realizar esta peticion',"
+                        + "  icon: 'error',"
+                        + "  confirmButtonText: 'Por favor intente mas tarde'"
+                        + "})");
+
+            }
+
+        } catch (Exception e) {
+            PrimeFaces.current().executeScript("Swal.fire({"
+                    + "  title: 'Error!',"
+                    + "  text: 'No se puede realizar esta peticion',"
+                    + "  icon: 'error',"
+                    + "  confirmButtonText: 'Por favor intente mas tarde'"
+                    + "})");
+        }
+
+    }
+    
     public Part getFotoProducto() {
         return fotoProducto;
     }
