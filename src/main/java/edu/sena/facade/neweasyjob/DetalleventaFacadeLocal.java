@@ -29,5 +29,7 @@ public interface DetalleventaFacadeLocal {
     List<Detalleventa> findRange(int[] range);
 
     int count();
+
+    public List<Detalleventa> detalleId(int idVenta);
     
 }

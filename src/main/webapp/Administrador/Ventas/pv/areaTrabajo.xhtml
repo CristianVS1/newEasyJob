@@ -42,11 +42,14 @@
                                                 <h:outputText value="#{ven.fechaVenta}">
                                                     <f:convertDateTime pattern="yyyy-MM-dd"></f:convertDateTime>
                                                 </h:outputText>
-                                                
+
                                             </td>
                                             <td>#{ven.empleado.usuario.datosId.primerNombre} #{ven.empleado.usuario.datosId.primerApellido}</td>
                                             <td>
                                                 <h:commandButton class="btn btn-info btn-icon-split btn-sm" value="Detalle Venta"></h:commandButton>
+                                                <h:commandButton action="#{usuarioSession.cargaTemporal(usu)}" class="btn btn-primary btn-icon-split btn-sm" type="button" html5:data-bs-toggle="modal" html5:data-bs-target="#ModalDetalleV" value="Detalle" >
+                                                    <f:ajax render=":ModalDetalleV"></f:ajax>
+                                                </h:commandButton>
                                             </td>
                                         </tr>
                                     </c:forEach>
@@ -66,6 +69,59 @@
                 </div>
                 <div class="col-md-4"></div>
 
+            </div>
+        </div>
+
+
+        <div class="modal fade" id="ModalDetalleV" tabindex="-1" aria-labelledby="ModalDetalleVLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog">
+                <div class="modal-content">
+                    <h:form>
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Detalle Venta</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                                <thead>
+                                    <tr>
+                                        <th>Producto</th>
+                                        <th>Cantidad Vendida</th>
+                                        <th>Cliente</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <h:form>
+                                        <c:forEach var="ven" items="#{ventasSession.todasVentas()}">
+                                            <tr>
+                                                <td>
+                                                    #{ven.id}
+                                                </td>
+                                                <td >
+                                                    <h:outputText value="#{ven.fechaVenta}">
+                                                        <f:convertDateTime pattern="yyyy-MM-dd"></f:convertDateTime>
+                                                    </h:outputText>
+
+                                                </td>
+                                                <td>#{ven.empleado.usuario.datosId.primerNombre} #{ven.empleado.usuario.datosId.primerApellido}</td>
+                                                <td>
+                                                    <h:commandButton class="btn btn-info btn-icon-split btn-sm" value="Detalle Venta"></h:commandButton>
+                                                    <h:commandButton action="#{usuarioSession.cargaTemporal(usu)}" class="btn btn-primary btn-icon-split btn-sm" type="button" html5:data-bs-toggle="modal" html5:data-bs-target="#ModalDetalleV" value="Detalle" >
+                                                        <f:ajax render=":ModalDetalleV"></f:ajax>
+                                                    </h:commandButton>
+                                                </td>
+                                            </tr>
+                                        </c:forEach>
+                                    </h:form>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                            <h:commandButton action="#{usuarioSession.newUser()}" class="btn btn-primary" value="Registrar"/>
+                        </div>
+                    </h:form>
+                </div>
             </div>
         </div>
     </ui:composition>

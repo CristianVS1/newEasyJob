@@ -6,9 +6,11 @@
 package edu.sena.facade.neweasyjob;
 
 import edu.sena.entity.neweasyjob.Detalleventa;
+import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 
 /**
  *
@@ -28,5 +30,18 @@ public class DetalleventaFacade extends AbstractFacade<Detalleventa> implements 
     public DetalleventaFacade() {
         super(Detalleventa.class);
     }
+
+    @Override
+    public List<Detalleventa> detalleId(int idVenta){
+            try {
+            em.getEntityManagerFactory().getCache().evictAll();
+            Query q = em.createQuery("SELECT d FROM Detalleventa v WHERE v.venta = :idVenta");
+            q.setParameter("idVenta", idVenta);
+            return q.getResultList();
+        } catch (Exception e) {
+            return null;
+        }
     
+
+    }
 }
